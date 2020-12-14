@@ -165,8 +165,8 @@ def get_SK_bbox(ann_path, image_dir, out_dir):
     bbox = uv2bbox(SK_uv, (256,256))
 
     # test draw
-    # img = cv2.imread(osp.join(image_dir, 'SK_color_1.png'))
-    # draw_joints(SK_uv[1], bbox[1], img)
+    img = cv2.imread(osp.join(image_dir, 'SK_color_1.png'))
+    draw_joints(SK_uv[1], bbox[1], img)
 
     # save bbox
     file_name = ann_path.split('/')[-1][:-4]
@@ -208,10 +208,12 @@ def draw_joints(uv, bbox, img):
     print(bbox)
     point_size = 1
     point_color = (0, 0, 255) # BGR
+    point_color2 = (0, 255, 0)
     thickness = 4 # 可以为 0 、4、8
     # draw joints
     for point in uv:
         cv2.circle(img, (int(point[0]),int(point[1])), point_size, point_color, thickness)
+        cv2.circle(img, (int(point[1]),int(point[0])), point_size, point_color2, thickness)
     
     # draw bbox
     cv2.rectangle(img, (bbox[0], bbox[1]), (bbox[0]+bbox[2],bbox[1]+bbox[3]), (0,255,0), 4)
@@ -223,7 +225,6 @@ if __name__ == "__main__":
     # out_dir = '../STB/test_out_bbox'
     # get_SK_bbox(ann_path, image_dir, out_dir)
 
-    # root_dir = '../STB/STB'
     root_dir = '../hand-pose-STB'
     subsets = ['B1Counting', 'B2Counting','B3Counting', 'B4Counting','B5Counting', 'B6Counting']
     f = open(osp.join(root_dir, 'STB_SK.pickle'), 'wb')
@@ -248,8 +249,8 @@ if __name__ == "__main__":
                         }
         to_pickle[subset] = subset_pickle
 
-        for ix, bb in enumerate(bbox):
-        # for ix in range(3):
+        # for ix, bb in enumerate(bbox):
+        for ix in range(3):
             bb = bbox[ix]
             img_path = osp.join(image_dir, 'SK_color_{}.png'.format(ix))
             img = cv2.imread(img_path)
