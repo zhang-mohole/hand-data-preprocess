@@ -18,7 +18,7 @@ def set_cam():
     R_l[2, 2] = 1
     R_r = R_l.copy()
     R_r[0, 3] = -base
-    print(R_l, R_r)
+    # print(R_l, R_r)
 
     K = np.diag([fx, fy, 1.0])
     K[0, 2] = tx
@@ -57,7 +57,7 @@ def anno2bbox(anno_path, out_dir):
 
     # save bbox
     file_name = ann_path.split('/')[-1][:-4]
-    np.save(osp.join(out_dir, '{}.npy'.format(file_name)), bbox)
+    np.save(osp.join(out_dir, '{}.npy'.format(file_name)), bbox_l)
     return bbox_l, xyz_l, uv_l
 
 
@@ -128,10 +128,11 @@ if __name__ == "__main__":
         cropped_out_dir = osp.join('../hand-pose-STB/cropped_images', subset + '_BB')
 
         bbox, BB_xyz, BB_uv = anno2bbox(ann_path, bbox_out_dir)
+        cropped_uv = BB_uv - np.tile(bbox[:, :2], 21).reshape(-1, 21, 2)
 
         subset_pickle = {'bb':
                             {'coor3d':BB_xyz,
-                             'coor2d':BB_uv}
+                             'coor2d':cropped_uv}
                         }
         to_pickle[subset] = subset_pickle
 
