@@ -165,8 +165,8 @@ def get_SK_bbox(ann_path, image_dir, out_dir):
     bbox = uv2bbox(SK_uv, (256,256))
 
     # test draw
-    img = cv2.imread(osp.join(image_dir, 'SK_color_1.png'))
-    draw_joints(SK_uv[1], bbox[1], img)
+    # img = cv2.imread(osp.join(image_dir, 'SK_color_1.png'))
+    # draw_joints(SK_uv[1], bbox[1], img)
 
     # save bbox
     file_name = ann_path.split('/')[-1][:-4]
